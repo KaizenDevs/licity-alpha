@@ -1,0 +1,62 @@
+{
+  "app": {
+    "title": "Licity",
+    "subtitle": "Contratación pública Colombia · SECOP II",
+    "live": "EN VIVO"
+  },
+  "filters": {
+    "search": "Buscar",
+    "searchPlaceholder": "Palabra clave en descripción o entidad…",
+    "department": "Departamento",
+    "allDepartments": "Todos los departamentos",
+    "modality": "Modalidad",
+    "allModalities": "Todas las modalidades",
+    "apply": "Buscar",
+    "reset": "Limpiar"
+  },
+  "table": {
+    "noResults": "Sin resultados",
+    "noResultsHint": "Ajusta los filtros e intenta de nuevo.",
+    "loading": "Consultando SECOP II…",
+    "found": "{n} procesos encontrados",
+    "export": "Exportar CSV",
+    "detail": "Ver",
+    "page": "Pág {current} de {total}"
+  },
+  "fields": {
+    "name": "Descripción",
+    "entity": "Entidad",
+    "nit": "NIT",
+    "department": "Departamento",
+    "city": "Ciudad",
+    "modality": "Modalidad",
+    "value": "Valor Total",
+    "budget": "Presupuesto Oficial",
+    "currency": "Moneda",
+    "status": "Estado",
+    "published": "Publicación",
+    "deadline": "Límite Oferta",
+    "awarded": "Adjudicación",
+    "reference": "Referencia",
+    "object": "Objeto del Contrato",
+    "url": "Enlace SECOP II"
+  },
+  "modal": {
+    "openSecop": "Abrir en SECOP II ↗",
+    "close": "Cerrar"
+  },
+  "export": {
+    "downloading": "Descargando registros…",
+    "done": "{n} registros exportados ✓",
+    "error": "Error exportando: {msg}"
+  },
+  "status": {
+    "Adjudicado": "Adjudicado",
+    "Activo": "Activo",
+    "Publicado": "Publicado",
+    "Cerrado": "Cerrado",
+    "Cancelado": "Cancelado",
+    "Desierto": "Desierto",
+    "Terminado": "Terminado"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "app": {
+    "title": "Licity",
+    "subtitle": "Colombian public procurement · SECOP II",
+    "live": "LIVE"
+  },
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Keyword in description or entity…",
+    "department": "Department",
+    "allDepartments": "All departments",
+    "modality": "Modality",
+    "allModalities": "All modalities",
+    "apply": "Search",
+    "reset": "Clear"
+  },
+  "table": {
+    "noResults": "No results",
+    "noResultsHint": "Adjust the filters and try again.",
+    "loading": "Querying SECOP II…",
+    "found": "{n} processes found",
+    "export": "Export CSV",
+    "detail": "View",
+    "page": "Page {current} of {total}"
+  },
+  "fields": {
+    "name": "Description",
+    "entity": "Entity",
+    "nit": "NIT",
+    "department": "Department",
+    "city": "City",
+    "modality": "Modality",
+    "value": "Total Value",
+    "budget": "Official Budget",
+    "currency": "Currency",
+    "status": "Status",
+    "published": "Published",
+    "deadline": "Bid Deadline",
+    "awarded": "Award Date",
+    "reference": "Reference",
+    "object": "Contract Object",
+    "url": "SECOP II Link"
+  },
+  "modal": {
+    "openSecop": "Open in SECOP II ↗",
+    "close": "Close"
+  },
+  "export": {
+    "downloading": "Downloading records…",
+    "done": "{n} records exported ✓",
+    "error": "Export error: {msg}"
+  },
+  "status": {
+    "Adjudicado": "Awarded",
+    "Activo": "Active",
+    "Publicado": "Published",
+    "Cerrado": "Closed",
+    "Cancelado": "Cancelled",
+    "Desierto": "Deserted",
+    "Terminado": "Terminated"
+  }
+}
