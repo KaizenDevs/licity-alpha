@@ -43,6 +43,7 @@
   },
   "modal": {
     "openSecop": "Open in SECOP II ↗",
+    "loginNote": "May require a SECOP II account to access",
     "close": "Close"
   },
   "export": {

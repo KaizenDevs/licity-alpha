@@ -23,14 +23,9 @@ export const useSecopStore = defineStore('secop', () => {
 
   function buildWhere() {
     const clauses = []
-    const { q, department, modality } = filters.value
-
+    const { department, modality } = filters.value
     if (department) clauses.push(`departamento_entidad='${department.replace(/'/g, "''")}'`)
     if (modality)   clauses.push(`modalidad_de_contratacion='${modality.replace(/'/g, "''")}'`)
-    if (q) {
-      const safe = q.replace(/'/g, "''")
-      clauses.push(`(upper(nombre_del_procedimiento) like upper('%${safe}%') OR upper(nombre_entidad) like upper('%${safe}%'))`)
-    }
     return clauses.join(' AND ')
   }
 
@@ -49,11 +44,14 @@ export const useSecopStore = defineStore('secop', () => {
     })
 
     const where = buildWhere()
+    const { q } = filters.value
     if (where) params.set('$where', where)
+    if (q)     params.set('$q', q)
     if (API.APP_TOKEN) params.set('$$app_token', API.APP_TOKEN)
 
     const countParams = new URLSearchParams({ '$select': 'count(*) as cnt' })
     if (where) countParams.set('$where', where)
+    if (q)     countParams.set('$q', q)
     if (API.APP_TOKEN) countParams.set('$$app_token', API.APP_TOKEN)
 
     try {
@@ -86,7 +84,9 @@ export const useSecopStore = defineStore('secop', () => {
     })
 
     const where = buildWhere()
+    const { q } = filters.value
     if (where) params.set('$where', where)
+    if (q)     params.set('$q', q)
     if (API.APP_TOKEN) params.set('$$app_token', API.APP_TOKEN)
 
     const res = await window.fetch(`${url}?${params}`)

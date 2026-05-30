@@ -15,8 +15,8 @@
               <label>{{ t(field.i18n) }}</label>
               <p v-if="field.format === 'url'">
                 <a
-                  v-if="row[field.key]"
-                  :href="row[field.key]"
+                  v-if="resolveUrl(row[field.key])"
+                  :href="resolveUrl(row[field.key])"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="detail-link"
@@ -24,6 +24,9 @@
                   {{ t('modal.openSecop') }}
                   <ExternalLink :size="12" style="vertical-align:-1px;margin-left:3px" />
                 </a>
+                <span v-if="resolveUrl(row[field.key])" class="detail-note">
+                  <Info :size="11" style="vertical-align:-1px;margin-right:3px" />{{ t('modal.loginNote') }}
+                </span>
                 <span v-else>—</span>
               </p>
               <p v-else-if="field.format === 'currency'">{{ formatCurrencyFull(row[field.key]) }}</p>
@@ -40,9 +43,16 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, onUnmounted } from 'vue'
-import { X, ExternalLink } from 'lucide-vue-next'
+import { X, ExternalLink, Info } from 'lucide-vue-next'
 import { DETAIL_FIELDS } from '../config/api.js'
 import { formatCurrencyFull, formatDate } from '../utils/format.js'
+
+// Socrata returns URL fields as { url: "...", description: "..." }
+function resolveUrl(val) {
+  if (!val) return null
+  if (typeof val === 'string') return val
+  return val.url ?? null
+}
 
 const { t } = useI18n()
 const props = defineProps({ row: Object })
@@ -142,4 +152,11 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 }
 
 .detail-link:hover { text-decoration: underline; }
+
+.detail-note {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
 </style>
