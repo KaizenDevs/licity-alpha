@@ -44,7 +44,10 @@
   "modal": {
     "openSecop": "Abrir en SECOP II ↗",
     "loginNote": "Puede requerir cuenta SECOP II para acceder",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "winnerTitle": "Contrato adjudicado",
+    "winnerLoading": "Consultando contratos…",
+    "winnerNone": "Sin contratos registrados para este proceso"
   },
   "export": {
     "downloading": "Descargando registros…",

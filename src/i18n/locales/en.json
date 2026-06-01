@@ -44,7 +44,10 @@
   "modal": {
     "openSecop": "Open in SECOP II ↗",
     "loginNote": "May require a SECOP II account to access",
-    "close": "Close"
+    "close": "Close",
+    "winnerTitle": "Awarded contract",
+    "winnerLoading": "Fetching contracts…",
+    "winnerNone": "No contracts found for this process"
   },
   "export": {
     "downloading": "Downloading records…",

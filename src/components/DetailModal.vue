@@ -35,6 +35,21 @@
             </div>
           </template>
         </div>
+
+        <div class="winner-section">
+          <h3 class="winner-title">{{ t('modal.winnerTitle') }}</h3>
+          <p v-if="contractsLoading" class="winner-loading">{{ t('modal.winnerLoading') }}</p>
+          <p v-else-if="!contracts.length" class="winner-empty">{{ t('modal.winnerNone') }}</p>
+          <div v-else class="winner-list">
+            <div v-for="(c, i) in contracts" :key="i" class="winner-card">
+              <div class="winner-card__name">{{ c.proveedor_adjudicado || '—' }}</div>
+              <div class="winner-card__meta">
+                <span class="winner-card__value">{{ formatCurrencyFull(c.valor_del_contrato) }}</span>
+                <span v-if="c.referencia_del_contrato" class="winner-card__ref">{{ c.referencia_del_contrato }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </Teleport>
@@ -42,12 +57,11 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, watch, ref } from 'vue'
 import { X, ExternalLink, Info } from 'lucide-vue-next'
-import { DETAIL_FIELDS } from '../config/api.js'
+import { DETAIL_FIELDS, API } from '../config/api.js'
 import { formatCurrencyFull, formatDate } from '../utils/format.js'
 
-// Socrata returns URL fields as { url: "...", description: "..." }
 function resolveUrl(val) {
   if (!val) return null
   if (typeof val === 'string') return val
@@ -57,6 +71,28 @@ function resolveUrl(val) {
 const { t } = useI18n()
 const props = defineProps({ row: Object })
 const emit = defineEmits(['close'])
+
+const contracts = ref([])
+const contractsLoading = ref(false)
+
+watch(() => props.row, async (row) => {
+  contracts.value = []
+  if (!row?.id_del_portafolio) return
+  contractsLoading.value = true
+  try {
+    const id = row.id_del_portafolio.replace(/'/g, "''")
+    const params = new URLSearchParams({
+      '$where': `proceso_de_compra='${id}'`,
+      '$select': 'proveedor_adjudicado,valor_del_contrato,referencia_del_contrato,tipo_de_contrato',
+      '$limit': 20,
+    })
+    if (API.APP_TOKEN) params.set('$$app_token', API.APP_TOKEN)
+    const res = await fetch(`${API.BASE}/${API.DATASETS.contracts}.json?${params}`)
+    if (res.ok) contracts.value = await res.json()
+  } finally {
+    contractsLoading.value = false
+  }
+}, { immediate: true })
 
 function onKeydown(e) {
   if (e.key === 'Escape') emit('close')
@@ -158,5 +194,64 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
   margin-top: 5px;
   color: var(--muted);
   font-size: 11px;
+}
+
+.winner-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.winner-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.winner-loading,
+.winner-empty {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.winner-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.winner-card {
+  background: var(--surface-alt, rgba(0,0,0,.04));
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.winner-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.winner-card__meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.winner-card__value {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.winner-card__ref {
+  font-size: 11px;
+  color: var(--muted);
 }
 </style>
