@@ -10,11 +10,11 @@ Browse Colombian public procurement data (SECOP II) in real time — no backend,
 
 - Search SECOP II procurement processes by keyword, department, and contracting modality
 - Sort and paginate results
-- View full process details in a modal
+- View full process details in a modal — including awarded contracts (winner name + value)
 - Export results to CSV (up to 2,000 records)
 - Switch between Spanish and English UI
 
-All data comes directly from Colombia's open data portal at [datos.gov.co](https://www.datos.gov.co) via the Socrata REST API.
+All data comes directly from Colombia's open data portal at [datos.gov.co](https://www.datos.gov.co) via the Socrata REST API. Both datasets update daily (automated sync from SECOP II).
 
 ---
 
@@ -67,7 +67,19 @@ src/
 
 ---
 
-## Changing the dataset
+## Data sources
+
+| Key | Resource ID | Description | Update freq |
+|-----|-------------|-------------|-------------|
+| `processes` | `p6dx-8zbt` | Active bidding processes (default) | Daily |
+| `contracts` | `jbjy-vk9h` | Awarded contracts | Daily |
+| `legacy` | `f789-7hwg` | SECOP I legacy processes | — |
+
+### Join key
+
+Processes and contracts link via `id_del_portafolio` (processes) = `proceso_de_compra` (contracts). The detail modal uses this to fetch winner info automatically.
+
+### Changing the active dataset
 
 Edit `src/config/api.js`:
 
@@ -76,13 +88,17 @@ Edit `src/config/api.js`:
 ACTIVE: 'contracts',
 ```
 
-Available datasets:
+---
 
-| Key | Resource ID | Description |
-|-----|-------------|-------------|
-| `processes` | `p6dx-8zbt` | Active bidding processes (default) |
-| `contracts` | `jbjy-vk9h` | Awarded contracts |
-| `legacy` | `f789-7hwg` | SECOP I legacy processes |
+## Detail modal — awarded contracts
+
+When a user opens a process, the modal fires a second API call to `jbjy-vk9h` filtered by `proceso_de_compra = id_del_portafolio`. Results show:
+
+- `proveedor_adjudicado` — winner name
+- `valor_del_contrato` — contract value (formatted as COP currency)
+- `referencia_del_contrato` — contract reference number
+
+Shows a loading state while fetching, and a "no contracts found" message when the process hasn't been awarded yet.
 
 ---
 
